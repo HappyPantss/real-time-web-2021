@@ -1,6 +1,3 @@
-/*
-https://socket.io/get-started/chat
-*/
 const express = require('express')
 const app = express()
 const http = require('http').createServer(app)
@@ -11,18 +8,15 @@ const port = process.env.PORT || 3000
 app.use(express.static(path.resolve('public')))
 
 io.on('connection', (socket) => {
-    console.log('a user connected')
+    console.log('user connected');
 
     socket.on('message', (message) => {
-        // console.log('message: ' + message)
         io.emit('message', message)
     })
 
     socket.on('disconnect', () => {
-        console.log('user disconnected')
+        console.log('user disconnected');
     })
 })
 
-http.listen(port, () => {
-    console.log('listening on port ', port)
-})
+http.listen(port, () => console.log(`listening on ${port}`))
