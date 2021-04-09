@@ -1,0 +1,26 @@
+{
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "real-time-web-2021",
+  "description": "- [Synopsis](#synopsis)\r - [Description](#description)\r - [Communication](#communication)\r - [Goals](#goals)\r - [Grading](#grading)\r - [Programme](#programme)",
+  "version": "1.0.0",
+  "main": "server.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HappyPantss/real-time-web-2021.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HappyPantss/real-time-web-2021/issues"
+  },
+  "homepage": "https://github.com/HappyPantss/real-time-web-2021#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^4.0.1"
+  }
+}
