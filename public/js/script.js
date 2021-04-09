@@ -7,6 +7,7 @@ document.querySelector('form').addEventListener('submit', (event) => {
     if (input.value) {
         socket.emit('message', input.value)
         input.value = ''
+        input.focuc()
     }
 })
 
