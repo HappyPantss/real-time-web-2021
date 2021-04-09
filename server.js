@@ -1,4 +1,6 @@
+const e = require('express')
 const express = require('express')
+const { type } = require('os')
 const app = express()
 const http = require('http').createServer(app) // Make http server to visit site locally
 const path = require('path')
