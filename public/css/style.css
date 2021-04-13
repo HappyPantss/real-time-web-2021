@@ -6,7 +6,7 @@ body {
     overflow: hidden;
     min-height: 100vh;
     min-width: 100vw;
-    background: rgba(0, 82, 189, 0.5);
+    background: #f1c40f;
 }
 
 main {
@@ -22,7 +22,7 @@ main {
 section {
     width: 30rem;
     height: 40rem;
-    border: 1px solid rgba(0, 82, 189, 0.5);
+    border: 1px solid #f1c40f50;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -71,12 +71,12 @@ section form input {
     border: none;
     flex-grow: 2;
     outline: none;
-    border: 1px solid rgba(0, 82, 189, 0.5);
+    border: 1px solid #f1c40f50;
 }
 
 section form>button {
-    background: rgba(0, 82, 189, 0.5);
-    border: 1px solid rgba(0, 82, 189, 0.5);
+    background: #f1c40f50;
+    border: 1px solid #f1c40f50;
     outline: none;
     color: white;
     font-weight: 700;
