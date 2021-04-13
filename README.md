@@ -11,6 +11,9 @@ The ideas that I had were to make a:
 ## Coding Style
 I make use the standardjs linter.
 
+## Sketches
+![Two Ideas](https://i.imgur.com/cluFxRW.png)
+
 ## The extra challenges I want to add
 * Add support for nicknames.
 * Boradcast a message to connected users when someone connects or disconnects.
