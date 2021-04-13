@@ -1,28 +1,28 @@
-const e = require('express')
+require('dotenv').config() // gets LASTFM_API_KEY
+
 const express = require('express')
-const { type } = require('os')
 const app = express()
-const http = require('http').createServer(app) // Make http server to visit site locally
+const http = require('http').createServer(app)
 const path = require('path')
+const fetch = require('node-fetch')
 const io = require('socket.io')(http)
-const port = process.env.port || 3000 // This port line makes sure you can use it for Heroku
+const port = process.env.PORT || 3000
 
+app.use(express.static(path.resolve('public')))
 
-app.use(express.static(path.resolve('public'))) // Makes the public map the static map 
-
-io.on('connection', (socket) => { // What to do when a user connects?
-    console.log('A user connected') // Log 'A user connected' when a user opened the page
+io.on('connection', (socket) => {
+    console.log('a user connected')
 
     socket.on('message', (message) => {
-        // console.log('Message: ' + message)
+        // console.log('message: ' + message)
         io.emit('message', message)
     })
 
     socket.on('disconnect', () => {
-        console.log('A user disconnected')
+        console.log('user disconnected')
     })
 })
 
 http.listen(port, () => {
-    console.log(`listening on port http://localhost:${port}`)
+    console.log('listening on port ', port)
 })
