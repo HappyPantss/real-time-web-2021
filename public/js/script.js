@@ -1,6 +1,7 @@
 const msg = document.querySelector('.msg')
 const guess = document.querySelector('input')
 const btn = document.querySelector('.btn')
+const btnAnswer = document.querySelector('.btnAnswer')
 let play = false;
 let newWords = ""
 let randWords = ""
@@ -38,20 +39,21 @@ btn.addEventListener('click', function() {
         randWords = scrambleWords(newWords.split("")).join("")
             // console.log(randWords.join(""))
         msg.innerHTML = randWords
-    } else {
-        let tempWord = guess.value;
-        if (tempWord === newWords) {
-            console.log('Correct')
-            play = false
-            msg.innerHTML = `Awesome It's Correct. It Is ${newWords}.`
-            btn.innerHTML = "Start Again"
-        } else {
-            console.log('Incorrect')
-            msg.innerHTML = `Sorry It's Not Correct. It was ${randWords}. Try again.`
-        }
     }
 })
 
+btnAnswer.addEventListener('click', function() {
+    let tempWord = guess.value;
+    if (tempWord === newWords) {
+        console.log('Correct')
+        play = false
+        msg.innerHTML = `Awesome It's Correct. It Is ${newWords}.`
+        btn.innerHTML = "Start Again"
+    } else {
+        console.log('Incorrect')
+        msg.innerHTML = `Sorry It's Not Correct. It was ${randWords}. Try again.`
+    }
+})
 
 var socket = io()
 var messages = document.querySelector('section ul')
@@ -71,3 +73,12 @@ socket.on('message', function(message) {
     messages.appendChild(element)
     messages.scrollTop = messages.scrollHeight
 })
+
+socket.on('clicked', function() {
+    var button = document.getElementById('button');
+
+    console.log('clicked');
+    document.getElementById("alert").innerHTML = "send clicked";
+
+    onClickHandler(button);
+});
