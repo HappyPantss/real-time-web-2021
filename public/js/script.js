@@ -100,11 +100,26 @@ gameForm.addEventListener('submit', (event) => {
     }
 })
 
+// socket.on('message', function(message) {
+//     var element = document.createElement('li')
+//     element.textContent = message
+//     messages.appendChild(element)
+//     messages.scrollTop = messages.scrollHeight
+// })
+
 socket.on('message', function(message) {
     var element = document.createElement('li')
-    element.textContent = message
-    messages.appendChild(element)
-    messages.scrollTop = messages.scrollHeight
+    element.classList.add('message')
+    element.innerHTML = `
+    <p class="text_meta">${message.nick}</p> 
+    <p class="text">
+    <span>${message.msg}</span>
+    </p>`;
+
+    document.querySelector('.chat_messages').appendChild(element)
+        // element.textContent = message
+        // messages.appendChild(element)
+        // messages.scrollTop = messages.scrollHeight
 })
 
 socket.on('clicked', function() {

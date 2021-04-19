@@ -25,6 +25,11 @@ main {
     display: none;
 }
 
+.message {
+    background: #f1c40f50;
+    color: white;
+}
+
 section {
     width: 30rem;
     height: 40rem;

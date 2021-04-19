@@ -51,7 +51,7 @@ io.on('connection', (socket) => {
 
     socket.on('message', (message) => {
         // console.log('message: ' + message)
-        io.emit('message', message)
+        io.emit('message', { msg: message, nick: socket.nickname })
     })
 
     socket.on('disconnect', () => {
