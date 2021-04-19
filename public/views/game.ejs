@@ -1,0 +1,20 @@
+<%- include ("./partials/head") %>
+
+    <main>
+        <section>
+            <h2>Get Scrambled</h2>
+            <ul class="chat_messages"></ul>
+            <form>
+                <input type="text" autocomplete="off">
+                <button class="btnAnswer">Send</button>
+            </form>
+        </section>
+        <section>
+            <h3 class="msg"></h3>
+            <button class="btn">Start game</button>
+        </section>
+    </main>
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <%- include ("./partials/footer.ejs") %>

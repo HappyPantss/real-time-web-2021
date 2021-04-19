@@ -1,11 +1,11 @@
 const msg = document.querySelector('.msg')
-const guess = document.querySelector('input')
+const guess = document.querySelector('#answer')
 const btn = document.querySelector('.btn')
 const btnAnswer = document.querySelector('.btnAnswer')
 let play = false;
 let newWords = ""
 let randWords = ""
-let sWords = ["amsterdam", "design", "school"];
+let sWords = wordList
 
 const createNewWords = () => {
     let ranNum = Math.floor(Math.random() * sWords.length)
@@ -57,9 +57,42 @@ btnAnswer.addEventListener('click', function() {
 
 var socket = io()
 var messages = document.querySelector('section ul')
-var input = document.querySelector('input')
+var gameForm = document.querySelector('#gameForm')
+var input = document.querySelector('#answer')
+var nickForm = document.querySelector('#setNick')
+var nickError = document.querySelector('#nickError')
+var nickBox = document.querySelector('#nickname')
+var nickWrap = document.querySelector('#nickWrap')
+var game = document.querySelector('#game')
+var chat = document.querySelector('#chat')
+var users = document.querySelector("#users")
+var userList = document.querySelector("#userList")
 
-document.querySelector('form').addEventListener('submit', (event) => {
+nickForm.addEventListener('submit', (event) => {
+    event.preventDefault()
+    socket.emit('new user', nickBox.value, function(data) {
+        if (data) {
+            nickWrap.style.display = "none";
+            game.style.display = "block";
+            chat.style.display = "block";
+            users.style.display = "block";
+        } else {
+            nickError.innerHTML = "That username is already taken! Try Again."
+        }
+    })
+    nickBox.value = ""
+})
+
+socket.on('usernames', function(data) {
+    var html = ''
+    var i;
+    for (i = 0; i < data.length; i++) {
+        html += data[i] + '<br>'
+    }
+    userList.innerHTML = html
+})
+
+gameForm.addEventListener('submit', (event) => {
     event.preventDefault()
     if (input.value) {
         socket.emit('message', input.value)
