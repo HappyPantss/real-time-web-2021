@@ -1,60 +1,3 @@
-const msg = document.querySelector('.msg')
-const guess = document.querySelector('#answer')
-const btn = document.querySelector('.btn')
-const btnAnswer = document.querySelector('.btnAnswer')
-let play = false;
-let newWords = ""
-let randWords = ""
-let sWords = wordList
-
-const createNewWords = () => {
-    let ranNum = Math.floor(Math.random() * sWords.length)
-        // console.log(ranNum)
-    let newTempSwords = sWords[ranNum]
-        // console.log(newTempSwords.split(""))
-    return newTempSwords
-}
-
-const scrambleWords = (arr) => {
-    for (let i = arr.length - 1; i >= 0; i--) {
-        let temp = arr[i]
-            // console.log(temp)
-        let j = Math.floor(Math.random() * (i + 1))
-            // console.log(i);
-            // console.log(j);
-
-        arr[i] = arr[j]
-        arr[j] = temp
-    }
-
-    return arr
-}
-
-btn.addEventListener('click', function() {
-    if (!play) {
-        play = true
-        btn.innerHTML = "Guess"
-        guess.classList.toggle('hidden')
-        newWords = createNewWords()
-        randWords = scrambleWords(newWords.split("")).join("")
-            // console.log(randWords.join(""))
-        msg.innerHTML = randWords
-    }
-})
-
-btnAnswer.addEventListener('click', function() {
-    let tempWord = guess.value;
-    if (tempWord === newWords) {
-        console.log('Correct')
-        play = false
-        msg.innerHTML = `Awesome It's Correct. It Is ${newWords}.`
-        btn.innerHTML = "Start Again"
-    } else {
-        console.log('Incorrect')
-        msg.innerHTML = `Sorry It's Not Correct. It was ${randWords}. Try again.`
-    }
-})
-
 var socket = io()
 var messages = document.querySelector('section ul')
 var gameForm = document.querySelector('#gameForm')
@@ -139,12 +82,3 @@ function sendMessage(message, nickname) {
 
     messages.scrollTop = messages.scrollHeight
 }
-
-socket.on('clicked', function() {
-    var button = document.getElementById('button');
-
-    console.log('clicked');
-    document.getElementById("alert").innerHTML = "send clicked";
-
-    onClickHandler(button);
-});
