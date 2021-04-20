@@ -73,9 +73,9 @@ nickForm.addEventListener('submit', (event) => {
     socket.emit('new user', nickBox.value, function(data) {
         if (data) {
             nickWrap.style.display = "none";
-            game.style.display = "block";
-            chat.style.display = "block";
-            users.style.display = "block";
+            game.style.display = "flex";
+            chat.style.display = "flex";
+            users.style.display = "flex";
         } else {
             nickError.innerHTML = "That username is already taken! Try Again."
         }
@@ -107,20 +107,38 @@ gameForm.addEventListener('submit', (event) => {
 //     messages.scrollTop = messages.scrollHeight
 // })
 
-socket.on('message', function(message) {
+socket.on('userJoined', userJoined => {
+    sendMessage(userJoined, false);
+})
+
+socket.on('motd', motd => {
+    sendMessage(motd, false);
+})
+
+socket.on('message', message => {
+    sendMessage(message.msg, message.nick);
+})
+
+socket.on('userLeft', userLeft => {
+    sendMessage(userLeft, false);
+})
+
+function sendMessage(message, nickname) {
     var element = document.createElement('li')
     element.classList.add('message')
-    element.innerHTML = `
-    <p class="text_meta">${message.nick}</p> 
-    <p class="text">
-    <span>${message.msg}</span>
-    </p>`;
+    if (nickname) {
+        element.innerHTML = `<p class="text_meta">${nickname}</p>`;
+    }
+    element.innerHTML = element.innerHTML + `
+      <p class="text">
+        <span>${message}</span>
+      </p>
+    `;
 
     document.querySelector('.chat_messages').appendChild(element)
-        // element.textContent = message
-        // messages.appendChild(element)
-        // messages.scrollTop = messages.scrollHeight
-})
+
+    messages.scrollTop = messages.scrollHeight
+}
 
 socket.on('clicked', function() {
     var button = document.getElementById('button');

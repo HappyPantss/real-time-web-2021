@@ -30,7 +30,11 @@ app.get('/game', function(req, res) {
     })
 });
 
-io.on('connection', (socket) => {
+io.sockets.on('connection', (socket) => {
+
+    socket.emit('motd', 'Welcome to Get Scrambled!')
+
+    socket.broadcast.emit('userJoined', 'A user has joined the chat.')
 
     socket.on('new user', function(data, callback) {
         if (nicknames.indexOf(data) != -1) {
@@ -55,11 +59,13 @@ io.on('connection', (socket) => {
     })
 
     socket.on('disconnect', () => {
+        console.log('user disconnected')
+
+        io.emit('userLeft', 'A user left the chat!')
+
         if (!socket.nickname) return
         nicknames.splice(nicknames.indexOf(socket.nickname), 1)
         updateNicknames()
-
-        console.log('user disconnected')
     })
 })
 
