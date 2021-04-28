@@ -1,15 +1,17 @@
-var socket = io()
-var messages = document.querySelector('section ul')
-var gameForm = document.querySelector('#gameForm')
-var input = document.querySelector('#answer')
-var nickForm = document.querySelector('#setNick')
-var nickError = document.querySelector('#nickError')
-var nickBox = document.querySelector('#nickname')
-var nickWrap = document.querySelector('#nickWrap')
-var game = document.querySelector('#game')
-var chat = document.querySelector('#chat')
-var users = document.querySelector("#users")
-var userList = document.querySelector("#userList")
+export const socket = io()
+import './game.js'
+
+let messages = document.querySelector('section ul')
+let gameForm = document.querySelector('#gameForm')
+let input = document.querySelector('#answer')
+let nickForm = document.querySelector('#setNick')
+let nickError = document.querySelector('#nickError')
+let nickBox = document.querySelector('#nickname')
+let nickWrap = document.querySelector('#nickWrap')
+let game = document.querySelector('#game')
+let chat = document.querySelector('#chat')
+let users = document.querySelector("#users")
+let userList = document.querySelector("#userList")
 
 nickForm.addEventListener('submit', (event) => {
     event.preventDefault()
@@ -27,8 +29,8 @@ nickForm.addEventListener('submit', (event) => {
 })
 
 socket.on('usernames', function(data) {
-    var html = ''
-    var i;
+    let html = ''
+    let i;
     for (i = 0; i < data.length; i++) {
         html += data[i] + '<br>'
     }
@@ -44,7 +46,7 @@ gameForm.addEventListener('submit', (event) => {
 })
 
 // socket.on('message', function(message) {
-//     var element = document.createElement('li')
+//     let element = document.createElement('li')
 //     element.textContent = message
 //     messages.appendChild(element)
 //     messages.scrollTop = messages.scrollHeight
@@ -67,7 +69,7 @@ socket.on('userLeft', userLeft => {
 })
 
 function sendMessage(message, nickname) {
-    var element = document.createElement('li')
+    let element = document.createElement('li')
     element.classList.add('message')
     if (nickname) {
         element.innerHTML = `<p class="text_meta">${nickname}</p>`;
@@ -82,3 +84,10 @@ function sendMessage(message, nickname) {
 
     messages.scrollTop = messages.scrollHeight
 }
+
+// GAME
+const msg = document.querySelector('.msg')
+
+socket.on('word', (finalWord) => {
+    msg.innerHTML = finalWord
+})

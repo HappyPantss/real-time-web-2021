@@ -1,12 +1,19 @@
+import { socket } from './script.js';
+const btn = document.querySelector('.btn')
+
 const msg = document.querySelector('.msg')
 const guess = document.querySelector('#answer')
-const btn = document.querySelector('.btn')
 const btnAnswer = document.querySelector('.btnAnswer')
 let play = false;
 let newWords = ""
 let randWords = ""
 let sWords = wordList
-const socket = io();
+
+btn.addEventListener('click', function() {
+    if (!play) {
+        playGame()
+    }
+})
 
 const createNewWords = () => {
     let ranNum = Math.floor(Math.random() * sWords.length)
@@ -31,23 +38,14 @@ const scrambleWords = (arr) => {
     return arr
 }
 
-// btn.addEventListener('click', function() {
-//     socket.emit('game');
-// })
-
-btn.addEventListener('click', function() {
-    if (!play) {
-        playGame()
-    }
-})
-
 function playGame() {
     play = true
     btnAnswer.innerHTML = "Guess"
     guess.classList.toggle('hidden')
     newWords = createNewWords()
     randWords = scrambleWords(newWords.split("")).join("")
-    msg.innerHTML = randWords
+
+    socket.emit('randWords', randWords)
 }
 
 btnAnswer.addEventListener('click', function() {
@@ -61,4 +59,8 @@ btnAnswer.addEventListener('click', function() {
             playGame()
         }, 1000);
     }
+})
+
+btn.addEventListener('click', function() {
+    socket.emit('game');
 })

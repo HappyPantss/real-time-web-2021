@@ -4,6 +4,7 @@ const server = require('http').createServer(app)
 const path = require('path')
 const io = require('socket.io')(server)
 const bodyParser = require('body-parser')
+const formatMessage = require('./src/modules/playGame');
 
 const nicknames = []
 
@@ -22,12 +23,12 @@ app.get('/', function(req, res) {
     res.render("login")
 });
 
-app.get('/game', function(req, res) {
-    res.render("game", {
-        username: req.query.username
-            // roomId: req.query.roomId
-    })
-});
+// app.get('/game', function(req, res) {
+//     res.render("game", {
+//         username: req.query.username
+//             // roomId: req.query.roomId
+//     })
+// });
 
 io.on('connection', (socket) => {
 
@@ -46,9 +47,13 @@ io.on('connection', (socket) => {
         }
     })
 
-    socket.on('game', function() {
-        // io.emit('userLeft', 'A user left the chat!')
-    });
+    // socket.on('game', function() {
+    //     formatMessage()
+    // });
+
+    socket.on('randWords', function(word) {
+        io.emit('word', word)
+    })
 
     console.log('a user connected')
 
