@@ -6,6 +6,7 @@ let play = false;
 let newWords = ""
 let randWords = ""
 let sWords = wordList
+const socket = io();
 
 const createNewWords = () => {
     let ranNum = Math.floor(Math.random() * sWords.length)
@@ -29,6 +30,10 @@ const scrambleWords = (arr) => {
 
     return arr
 }
+
+// btn.addEventListener('click', function() {
+//     socket.emit('game');
+// })
 
 btn.addEventListener('click', function() {
     if (!play) {

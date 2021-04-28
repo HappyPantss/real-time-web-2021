@@ -9,15 +9,14 @@ const nicknames = []
 
 const port = process.env.PORT || 3000
 
-
 app.use(bodyParser.urlencoded({
     extended: true,
 }));
 
-app.use(express.static('public'));
+app.use(express.static('src/public'));
 
 app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, 'public/views'))
+app.set('views', path.join(__dirname, 'src/public/views'))
 
 app.get('/', function(req, res) {
     res.render("login")
@@ -30,7 +29,7 @@ app.get('/game', function(req, res) {
     })
 });
 
-io.sockets.on('connection', (socket) => {
+io.on('connection', (socket) => {
 
     socket.emit('motd', 'Welcome to Get Scrambled!')
 
@@ -46,6 +45,10 @@ io.sockets.on('connection', (socket) => {
             updateNicknames()
         }
     })
+
+    socket.on('game', function() {
+        // io.emit('userLeft', 'A user left the chat!')
+    });
 
     console.log('a user connected')
 
@@ -70,5 +73,5 @@ io.sockets.on('connection', (socket) => {
 })
 
 server.listen(port, () => {
-    console.log('listening on port ', port)
+    console.log('listening on port ', 'http://localhost:' + port)
 })
