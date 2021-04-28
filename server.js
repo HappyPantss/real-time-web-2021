@@ -4,7 +4,6 @@ const server = require('http').createServer(app)
 const path = require('path')
 const io = require('socket.io')(server)
 const bodyParser = require('body-parser')
-const formatMessage = require('./src/modules/playGame');
 
 const nicknames = []
 
@@ -50,6 +49,18 @@ io.on('connection', (socket) => {
     // socket.on('game', function() {
     //     formatMessage()
     // });
+
+    socket.on('playGame', function(playing) {
+        io.emit('playing', playing)
+    })
+
+    socket.on('tempWord', function(guess) {
+        io.emit('guess', guess)
+    })
+
+    socket.on('newWords', function(answer) {
+        io.emit('answer', answer)
+    })
 
     socket.on('randWords', function(word) {
         io.emit('word', word)

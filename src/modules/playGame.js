@@ -1,5 +1,5 @@
-function formatMessage() {
-    console.log("The module is working.")
-}
+// function formatMessage() {
+//     console.log("The module is working.")
+// }
 
-module.exports = formatMessage
+// module.exports = formatMessage

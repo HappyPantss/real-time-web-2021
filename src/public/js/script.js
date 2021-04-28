@@ -86,8 +86,91 @@ function sendMessage(message, nickname) {
 }
 
 // GAME
-const msg = document.querySelector('.msg')
+let msg = document.querySelector('.msg')
+let btn = document.querySelector('.btn')
+
+let guess = document.querySelector('#answer')
+let btnAnswer = document.querySelector('.btnAnswer')
+let play = false;
+let newWords = ""
+let randWords = ""
+let sWords = wordList
+
+btn.addEventListener('click', function() {
+    // btn.style.display = "none";
+    if (!play) {
+        // playGame()
+        socket.emit('playGame', playGame())
+    }
+
+    setInterval(function() {
+        playGame()
+    }, 10000);
+})
+
+socket.on('playing', () => {
+    btn.style.display = "none";
+})
+
+const createNewWords = () => {
+    let ranNum = Math.floor(Math.random() * sWords.length)
+        // console.log(ranNum)
+    let newTempSwords = sWords[ranNum]
+        // console.log(newTempSwords.split(""))
+    return newTempSwords
+}
+
+const scrambleWords = (arr) => {
+    for (let i = arr.length - 1; i >= 0; i--) {
+        let temp = arr[i]
+            // console.log(temp)
+        let j = Math.floor(Math.random() * (i + 1))
+            // console.log(i);
+            // console.log(j);
+
+        arr[i] = arr[j]
+        arr[j] = temp
+    }
+
+    return arr
+}
+
+function playGame() {
+    play = true
+    btnAnswer.innerHTML = "Guess"
+    guess.classList.toggle('hidden')
+    newWords = createNewWords()
+    randWords = scrambleWords(newWords.split("")).join("")
+
+    // msg.innerHTML = randWords
+    socket.emit('newWords', newWords)
+    socket.emit('randWords', randWords)
+}
 
 socket.on('word', (finalWord) => {
+    console.log('finalWord: ' + finalWord)
     msg.innerHTML = finalWord
+})
+
+socket.on('answer', (answerWord) => {
+    console.log('answerWord: ' + answerWord)
+})
+
+btnAnswer.addEventListener('click', function() {
+    let tempWord = guess.value;
+    socket.emit('tempWord', tempWord)
+
+    socket.on('guess', (guessedWord) => {
+        console.log('guessedWord: ' + guessedWord)
+        console.log('newWords: ' + newWords)
+        if (guessedWord === newWords) {
+            console.log('Correct')
+
+            msg.innerHTML = `Awesome It's Correct. It Is ${newWords}.`
+
+            setTimeout(function() {
+                playGame()
+            }, 1000);
+        }
+    })
 })
