@@ -12,6 +12,7 @@ let game = document.querySelector('#game')
 let chat = document.querySelector('#chat')
 let users = document.querySelector("#users")
 let userList = document.querySelector("#userList")
+let listItem = document.querySelector("li")
 
 nickForm.addEventListener('submit', (event) => {
     event.preventDefault()
@@ -102,31 +103,18 @@ btn.addEventListener('click', function() {
         // playGame()
         socket.emit('playGame', playGame())
     }
-
-    setInterval(function() {
-        playGame()
-    }, 10000);
-})
-
-socket.on('playing', () => {
-    btn.style.display = "none";
 })
 
 const createNewWords = () => {
     let ranNum = Math.floor(Math.random() * sWords.length)
-        // console.log(ranNum)
     let newTempSwords = sWords[ranNum]
-        // console.log(newTempSwords.split(""))
     return newTempSwords
 }
 
 const scrambleWords = (arr) => {
     for (let i = arr.length - 1; i >= 0; i--) {
         let temp = arr[i]
-            // console.log(temp)
         let j = Math.floor(Math.random() * (i + 1))
-            // console.log(i);
-            // console.log(j);
 
         arr[i] = arr[j]
         arr[j] = temp
@@ -137,40 +125,42 @@ const scrambleWords = (arr) => {
 
 function playGame() {
     play = true
-    btnAnswer.innerHTML = "Guess"
     guess.classList.toggle('hidden')
     newWords = createNewWords()
     randWords = scrambleWords(newWords.split("")).join("")
 
-    // msg.innerHTML = randWords
     socket.emit('newWords', newWords)
     socket.emit('randWords', randWords)
 }
 
-socket.on('word', (finalWord) => {
-    console.log('finalWord: ' + finalWord)
-    msg.innerHTML = finalWord
-})
-
 socket.on('answer', (answerWord) => {
-    console.log('answerWord: ' + answerWord)
+    // console.log('answerWord: ' + answerWord)
+    newWords = answerWord
 })
 
-btnAnswer.addEventListener('click', function() {
-    let tempWord = guess.value;
-    socket.emit('tempWord', tempWord)
+socket.on('word', (scrambledWord) => {
+    btnAnswer.innerHTML = "Guess"
 
-    socket.on('guess', (guessedWord) => {
-        console.log('guessedWord: ' + guessedWord)
-        console.log('newWords: ' + newWords)
-        if (guessedWord === newWords) {
-            console.log('Correct')
+    console.log('scrambledWord: ' + scrambledWord)
+    console.log('newWords: ' + newWords)
+    msg.innerHTML = scrambledWord
+})
+
+socket.on('playing', () => {
+    btn.style.display = "none";
+    console.log('You should only see this if playing.')
+
+    btnAnswer.addEventListener('click', function() {
+        if (input.value == newWords) {
+            // console.log('There is blub in the input.')
 
             msg.innerHTML = `Awesome It's Correct. It Is ${newWords}.`
 
             setTimeout(function() {
                 playGame()
             }, 1000);
+
+            // sendMessage("You're answer is correct!");
         }
     })
 })
