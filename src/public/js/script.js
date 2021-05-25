@@ -1,5 +1,4 @@
-export const socket = io()
-import './game.js'
+const socket = io()
 
 let messages = document.querySelector('section ul')
 let gameForm = document.querySelector('#gameForm')
@@ -152,15 +151,18 @@ socket.on('playing', () => {
 
     btnAnswer.addEventListener('click', function() {
         if (input.value == newWords) {
-            // console.log('There is blub in the input.')
+            msg.innerHTML = `Awesome It's Correct. It Is <span class="correctAnswer">${newWords}</span>.`
 
-            msg.innerHTML = `Awesome It's Correct. It Is ${newWords}.`
+            socket.emit('answerCorrect', newWords)
 
             setTimeout(function() {
                 playGame()
-            }, 1000);
-
-            // sendMessage("You're answer is correct!");
+            }, 2000);
         }
     })
+})
+
+socket.on('tellOther', (tellOther) => {
+    msg.innerHTML = `Oops! The word was : <span class="falseAnswer">${newWords}</span>.`
+        // sendMessage(tellOther, false);
 })

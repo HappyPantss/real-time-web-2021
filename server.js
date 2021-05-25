@@ -19,7 +19,7 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'src/public/views'))
 
 app.get('/', function(req, res) {
-    res.render("login")
+    res.render("general")
 });
 
 // app.get('/game', function(req, res) {
@@ -62,6 +62,11 @@ io.on('connection', (socket) => {
         io.emit('answer', answer)
     })
 
+    socket.on('answerCorrect', (newWords) => {
+        // Sends to all clients except sender
+        socket.broadcast.emit('tellOther', newWords);
+    })
+
     socket.on('randWords', function(word) {
         io.emit('word', word)
     })
@@ -76,6 +81,8 @@ io.on('connection', (socket) => {
         // console.log('message: ' + message)
         io.emit('message', { msg: message, nick: socket.nickname })
     })
+
+    socket.emit('correct', 'You guessed correct! ')
 
     socket.on('disconnect', () => {
         console.log('user disconnected')

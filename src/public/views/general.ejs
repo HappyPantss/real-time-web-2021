@@ -1,0 +1,30 @@
+<%- include ("./partials/head.ejs") %>
+
+    <main>
+        <section id="nickWrap">
+            <p>Enter a username:</p>
+            <p id="nickError"></p>
+            <form id="setNick">
+                <input type="text" id="nickname">
+                <input type="submit">
+            </form>
+        </section>
+        <section id="chat">
+            <h2>Get Scrambled</h2>
+            <ul class="chat_messages"></ul>
+            <form id="gameForm">
+                <input type="text" autocomplete="off" id="answer">
+                <button class="btnAnswer">Send</button>
+            </form>
+        </section>
+        <section id="game">
+            <h3 class="msg"></h3>
+            <button class="btn">Start game</button>
+        </section>
+        <section id="users">
+            <h2>Users</h2>
+            <p id="userList"></p>
+        </section>
+    </main>
+
+    <%- include ("./partials/footer.ejs") %>

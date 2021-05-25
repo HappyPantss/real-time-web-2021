@@ -106,3 +106,19 @@ section form>button {
 h3 {
     font-size: 3rem;
 }
+
+.correct {
+    background: #2cd10350;
+}
+
+.msg {
+    text-align: center;
+}
+
+.correctAnswer {
+    color: green;
+}
+
+.falseAnswer {
+    color: red;
+}
