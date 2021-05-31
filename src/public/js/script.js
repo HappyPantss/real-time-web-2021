@@ -156,7 +156,7 @@ socket.on('playing', () => {
             socket.emit('answerCorrect', newWords)
 
             setTimeout(function() {
-                playGame()
+                socket.emit('playGame', playGame())
             }, 2000);
         }
     })

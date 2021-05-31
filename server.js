@@ -82,8 +82,6 @@ io.on('connection', (socket) => {
         io.emit('message', { msg: message, nick: socket.nickname })
     })
 
-    socket.emit('correct', 'You guessed correct! ')
-
     socket.on('disconnect', () => {
         console.log('user disconnected')
 

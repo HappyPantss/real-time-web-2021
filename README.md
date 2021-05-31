@@ -42,18 +42,19 @@ In this project I don't use an API, because it was to difficult to find one. Tha
 **Script tag:** https://cdn.jsdelivr.net/npm/random-words@1.1.1/index.min.js<br>
 **All files:** https://www.jsdelivr.com/package/npm/random-words
 ### Data Life Cycle Diagram
-**WORKING ON**
+![Data Life Cycle Diagram](https://i.imgur.com/Q1eA1Ti.png)
 ### Actor Diagram
-![](https://i.imgur.com/5YAw0Ok.jpg)
+![Actor Diagram](https://i.imgur.com/5YAw0Ok.jpg)
 ### Real-time Events
 | Socket | Description |
 | --- | --- |
 | `connection` | Know when a user has connected. |
-| `new user` | Checks if the nicknane/ username is still available. |
+| `newUser` | Checks if the nicknane/ username is still available. |
 | `playGame` | When the button to start the game is pressed, hide the button. |
 | `tempWord` | Listen to the answer of the user. |
 | `randWords` | The scrambled word. |
 | `newWords` | The solution word. |
+| `answerCorrect` | Tell the user if they answered it correctly, otherwise tell them what the correct word was. |
 | `message` | The chat message with nickname. |
 | `disconnect` | Disconnects the user from the game.  |
 | `usernames` | Show all the users that are online in a list. |
