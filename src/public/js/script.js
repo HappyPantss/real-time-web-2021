@@ -145,24 +145,32 @@ socket.on('word', (scrambledWord) => {
     msg.innerHTML = scrambledWord
 })
 
+var clicks = 0;
+
 socket.on('playing', () => {
     btn.style.display = "none";
     console.log('You should only see this if playing.')
 
     btnAnswer.addEventListener('click', function() {
         if (input.value == newWords) {
-            msg.innerHTML = `Awesome It's Correct. It Is <span class="correctAnswer">${newWords}</span>.`
+            console.log("AWESOME")
+                // msg.innerHTML = `Awesome It's Correct. It Is <span class="correctAnswer">${newWords}</span>.`
+
+            socket.on('tellYou', (tellYou) => {
+                // msg.innerHTML = `Oops! The word was : <span class="falseAnswer">${newWords}</span>.`
+                sendMessage(tellYou, false);
+            })
+
+            clicks += 1;
+            document.getElementById("clicks").innerHTML = clicks;
 
             socket.emit('answerCorrect', newWords)
-
-            setTimeout(function() {
-                socket.emit('playGame', playGame())
-            }, 2000);
+            socket.emit('playGame', playGame())
         }
     })
 })
 
 socket.on('tellOther', (tellOther) => {
-    msg.innerHTML = `Oops! The word was : <span class="falseAnswer">${newWords}</span>.`
-        // sendMessage(tellOther, false);
+    // msg.innerHTML = `Oops! The word was : <span class="falseAnswer">${newWords}</span>.`
+    sendMessage(tellOther, false);
 })

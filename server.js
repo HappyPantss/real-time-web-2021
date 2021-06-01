@@ -64,7 +64,8 @@ io.on('connection', (socket) => {
 
     socket.on('answerCorrect', (newWords) => {
         // Sends to all clients except sender
-        socket.broadcast.emit('tellOther', newWords);
+        socket.broadcast.emit('tellOther', 'The word was: ' + newWords);
+        socket.emit('tellYou', 'You are correct! Awesome! It was: ' + newWords);
     })
 
     socket.on('randWords', function(word) {

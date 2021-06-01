@@ -72,7 +72,8 @@ section ul {
     padding: .2em;
     list-style-type: none;
     flex-grow: 2;
-    overflow-x: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 section ul>li {
@@ -93,6 +94,22 @@ section form input {
     flex-grow: 2;
     outline: none;
     border: 1px solid #f1c40f50;
+}
+
+.btn {
+    background: #f1c40f50;
+    border: 4px solid #f1c40f50;
+    height: 4rem;
+    width: 22rem;
+    border-radius: 10px;
+    margin-top: -2.7rem;
+    outline: none;
+    color: black;
+    font-weight: 700;
+}
+
+#answer {
+    height: 2.8rem;
 }
 
 section form>button {
