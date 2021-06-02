@@ -13,6 +13,12 @@ let users = document.querySelector("#users")
 let userList = document.querySelector("#userList")
 let listItem = document.querySelector("li")
 
+// TIMER
+var timer;
+var timeLeft = 20; // seconds
+let goBtn = document.querySelector('.goBtn')
+let timerSpan = document.querySelector('#timer')
+
 nickForm.addEventListener('submit', (event) => {
     event.preventDefault()
     socket.emit('new user', nickBox.value, function(data) {
@@ -96,11 +102,50 @@ let newWords = ""
 let randWords = ""
 let sWords = wordList
 
+
+
+// What to do when the timer runs out
+function gameOver() {
+    // This cancels the setInterval, so the updateTimer stops getting called
+    clearInterval(timer)
+}
+
+function updateTimer() {
+    timeLeft = timeLeft - 1
+    if (timeLeft >= 0) {
+        // timerSpan.innerHTML = timeLeft
+        console.log(timeLeft)
+    } else {
+        // console.log('Done!')
+        clearInterval(timer)
+        timeLeft = 20
+        start()
+        socket.emit('playGame', playGame())
+    }
+}
+
+function start() {
+    timeLeft = 20
+        // setInterval is a built-in function that will call the given function
+        // every N milliseconds (1 second = 1000 ms)
+    timer = setInterval(updateTimer, 1000)
+
+    // It will be a whole second before the time changes, so we'll call the update
+    // once ourselves
+    updateTimer()
+}
+
+// The button has an on-click event handler that calls this
+// goBtn.addEventListener('click', () => {
+//     start()
+// })
+
 btn.addEventListener('click', function() {
     // btn.style.display = "none";
     if (!play) {
         // playGame()
         socket.emit('playGame', playGame())
+        start()
     }
 })
 
@@ -163,8 +208,10 @@ socket.on('playing', () => {
 
             clicks += 1;
             document.getElementById("clicks").innerHTML = clicks;
-
             socket.emit('answerCorrect', newWords)
+
+            timeLeft = 20
+
             socket.emit('playGame', playGame())
         }
     })
