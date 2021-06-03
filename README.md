@@ -41,14 +41,14 @@ The ideas that I had were to make a:
 ### Should haves
 - [x] Show online users
 - [x] Show number of your correct answers
-- [] Add support for nicknames
-- [] Add "{user} is typing" functionality
-- [] Show timer
+- [ ] Add support for nicknames
+- [ ] Add "{user} is typing" functionality
+- [ ] Show timer
 
 ### Would haves
-- [] Scoreboard/ save scores
-- [] Show number of correct answers from other users
-- [] Prettier view of the scrambled word
+- [ ] Scoreboard/ save scores
+- [ ] Show number of correct answers from other users
+- [ ] Prettier view of the scrambled word
 
 ## 📈 Data
 ### API
