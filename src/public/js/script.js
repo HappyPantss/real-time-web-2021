@@ -13,12 +13,13 @@ let users = document.querySelector("#users")
 let userList = document.querySelector("#userList")
 let listItem = document.querySelector("li")
 
-// TIMER
+// Set variables for the timer
 var timer;
 var timeLeft = 20; // seconds
 let goBtn = document.querySelector('.goBtn')
 let timerSpan = document.querySelector('#timer')
 
+// Check if the username already exists, if so show error message, if not continue to the game
 nickForm.addEventListener('submit', (event) => {
     event.preventDefault()
     socket.emit('new user', nickBox.value, function(data) {
@@ -34,6 +35,7 @@ nickForm.addEventListener('submit', (event) => {
     nickBox.value = ""
 })
 
+// Set the users in the user list
 socket.on('usernames', function(data) {
     let html = ''
     let i;
@@ -43,6 +45,7 @@ socket.on('usernames', function(data) {
     userList.innerHTML = html
 })
 
+// See if the message input is empty, if so, don't send something.
 gameForm.addEventListener('submit', (event) => {
     event.preventDefault()
     if (input.value) {
@@ -51,29 +54,28 @@ gameForm.addEventListener('submit', (event) => {
     }
 })
 
-// socket.on('message', function(message) {
-//     let element = document.createElement('li')
-//     element.textContent = message
-//     messages.appendChild(element)
-//     messages.scrollTop = messages.scrollHeight
-// })
-
+// Show message when a user has joined
 socket.on('userJoined', userJoined => {
     sendMessage(userJoined, false);
 })
 
+// Show a Message of The Day in the chat when someone joines
 socket.on('motd', motd => {
     sendMessage(motd, false);
 })
 
+// Show the message, with message and nickname
 socket.on('message', message => {
     sendMessage(message.msg, message.nick);
 })
 
+// Show message when a user has left
 socket.on('userLeft', userLeft => {
     sendMessage(userLeft, false);
 })
 
+// User can send messages before, during and after the game.
+// If you play the game, you can chat and guess at the same time, you don't get feedback if the answer is not correct
 function sendMessage(message, nickname) {
     let element = document.createElement('li')
     element.classList.add('message')
@@ -91,7 +93,7 @@ function sendMessage(message, nickname) {
     messages.scrollTop = messages.scrollHeight
 }
 
-// GAME
+// Game
 let msg = document.querySelector('.msg')
 let btn = document.querySelector('.btn')
 
@@ -102,8 +104,6 @@ let newWords = ""
 let randWords = ""
 let sWords = wordList
 
-
-
 // What to do when the timer runs out
 function gameOver() {
     // This cancels the setInterval, so the updateTimer stops getting called
@@ -113,10 +113,9 @@ function gameOver() {
 function updateTimer() {
     timeLeft = timeLeft - 1
     if (timeLeft >= 0) {
-        // timerSpan.innerHTML = timeLeft
         console.log(timeLeft)
     } else {
-        // console.log('Done!')
+        console.log('Done!')
         clearInterval(timer)
         timeLeft = 20
         start()
@@ -135,26 +134,22 @@ function start() {
     updateTimer()
 }
 
-// The button has an on-click event handler that calls this
-// goBtn.addEventListener('click', () => {
-//     start()
-// })
-
+// Start game and timer
 btn.addEventListener('click', function() {
-    // btn.style.display = "none";
     if (!play) {
-        // playGame()
         socket.emit('playGame', playGame())
         start()
     }
 })
 
+// Get a random word out of the list
 const createNewWords = () => {
     let ranNum = Math.floor(Math.random() * sWords.length)
     let newTempSwords = sWords[ranNum]
     return newTempSwords
 }
 
+// Scramble word 
 const scrambleWords = (arr) => {
     for (let i = arr.length - 1; i >= 0; i--) {
         let temp = arr[i]
@@ -167,42 +162,39 @@ const scrambleWords = (arr) => {
     return arr
 }
 
+// When game is played, make show the word that was scrambled as 1 word
 function playGame() {
     play = true
     guess.classList.toggle('hidden')
     newWords = createNewWords()
+
+    // Join all letters to one word
     randWords = scrambleWords(newWords.split("")).join("")
 
     socket.emit('newWords', newWords)
     socket.emit('randWords', randWords)
 }
 
+// Give the answer to the server
 socket.on('answer', (answerWord) => {
-    // console.log('answerWord: ' + answerWord)
     newWords = answerWord
 })
 
+// Give the right answer and scrambled word to the server and write to all clients.
 socket.on('word', (scrambledWord) => {
     btnAnswer.innerHTML = "Guess"
-
-    console.log('scrambledWord: ' + scrambledWord)
-    console.log('newWords: ' + newWords)
     msg.innerHTML = scrambledWord
 })
 
 var clicks = 0;
 
+// Check if answer is correct or not
 socket.on('playing', () => {
     btn.style.display = "none";
-    console.log('You should only see this if playing.')
 
     btnAnswer.addEventListener('click', function() {
         if (input.value == newWords) {
-            console.log("AWESOME")
-                // msg.innerHTML = `Awesome It's Correct. It Is <span class="correctAnswer">${newWords}</span>.`
-
             socket.on('tellYou', (tellYou) => {
-                // msg.innerHTML = `Oops! The word was : <span class="falseAnswer">${newWords}</span>.`
                 sendMessage(tellYou, false);
             })
 
@@ -210,14 +202,16 @@ socket.on('playing', () => {
             document.getElementById("clicks").innerHTML = clicks;
             socket.emit('answerCorrect', newWords)
 
+            // reset timer
             timeLeft = 20
 
+            // restart game if answered correctly.
             socket.emit('playGame', playGame())
         }
     })
 })
 
+// If one user has answered correctly, show other user the word is already guessed right.
 socket.on('tellOther', (tellOther) => {
-    // msg.innerHTML = `Oops! The word was : <span class="falseAnswer">${newWords}</span>.`
     sendMessage(tellOther, false);
 })

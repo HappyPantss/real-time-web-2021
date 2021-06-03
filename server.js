@@ -22,13 +22,6 @@ app.get('/', function(req, res) {
     res.render("general")
 });
 
-// app.get('/game', function(req, res) {
-//     res.render("game", {
-//         username: req.query.username
-//             // roomId: req.query.roomId
-//     })
-// });
-
 io.on('connection', (socket) => {
 
     socket.emit('motd', 'Welcome to Get Scrambled!')
@@ -46,10 +39,6 @@ io.on('connection', (socket) => {
         }
     })
 
-    // socket.on('game', function() {
-    //     formatMessage()
-    // });
-
     socket.on('playGame', function(playing) {
         io.emit('playing', playing)
     })
@@ -63,8 +52,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('answerCorrect', (newWords) => {
-        // Sends to all clients except sender
-        socket.broadcast.emit('tellOther', 'The word was: ' + newWords);
+        socket.broadcast.emit('tellOther', 'Someone else answered correctly! The word was: ' + newWords);
         socket.emit('tellYou', 'You are correct! Awesome! It was: ' + newWords);
     })
 
@@ -79,7 +67,6 @@ io.on('connection', (socket) => {
     }
 
     socket.on('message', (message) => {
-        // console.log('message: ' + message)
         io.emit('message', { msg: message, nick: socket.nickname })
     })
 
