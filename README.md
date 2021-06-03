@@ -31,9 +31,24 @@ The ideas that I had were to make a:
 
 ## ✨ Functionalities
 ### Must haves
-* Add support for nicknames.
-* Boradcast a message to connected users when someone connects or disconnects.
-* Add "{user} is typing" functionality
+- [x] Login with nickname
+- [x] Broadcast a message to connected users when someone connects or disconnects
+- [x] Show who wrote the message
+- [x] Set timer on the words
+- [x] Show if you guessed correctly
+- [x] Show if other player guessed correctly
+
+### Should haves
+- [x] Show online users
+- [x] Show number of your correct answers
+- [] Add support for nicknames
+- [] Add "{user} is typing" functionality
+- [] Show timer
+
+### Would haves
+- [] Scoreboard/ save scores
+- [] Show number of correct answers from other users
+- [] Prettier view of the scrambled word
 
 ## 📈 Data
 ### API
